@@ -2,17 +2,19 @@ var http = require('http');
 var f= require('fs');
 
 function handler(request, response){
-  var endpoint = request.url;
-  console.log(endpoint);
-  var method = request.method;
-  console.log(method);
-  response.writeHead(200, {"Content-Type" : "text/html"});
-  if (endpoint === '/node') {
-    response.write('girls');
-  } else if (endpoint === '/girls') {
-    response.write('node?');
+
+  if (url.length === "/") {
+    response.writeHead(200, {"Content-Type" : "text/html"});
+
+    fs.readFile(__dirname + '/public/index.html',function(error, file) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      response.end(file);
+    });
   }
-  response.end();
 }
 
 var server = http.createServer(handler);
