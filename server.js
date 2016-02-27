@@ -9,11 +9,10 @@ server.listen(3000, function() {
 function handler(request, response){
   var endpoint = request.url;
   console.log(endpoint);
- var method = request.method;
- console.log(method);
+  var method = request.method;
+  console.log(method);
   if (endpoint === "/") {
     response.writeHead(200, {"Content-Type" : "text/html"});
-
     fs.readFile(__dirname + '/public/index.html', function(error, file) {
       if (error) {
         console.log(error);
@@ -23,15 +22,15 @@ function handler(request, response){
       response.end(file);
     });
   }
-  if (endpoint === '/node') {
+   else if (endpoint === '/node') {
      response.write('girls');
   } else if (endpoint === '/girls') {
      response.write('node?');
   } else {
-
-    var extension = [".css", ".ico", ".jpg"];
-    response.writeHead(200, {"Content-Type" : "text"});
-    fs.readFile(__dirname + '/public/', function(error, file) {
+    var extension = endpoint.split('.');
+    var ext = extension[1];
+    response.writeHead(200, {"Content-Type" : "text/"+ ext});
+    fs.readFile(__dirname + '/public' + endpoint, function(error, file) {
       if (error) {
         console.log(error);
         return;
