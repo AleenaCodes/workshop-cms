@@ -1,12 +1,20 @@
 var http = require('http');
-var f= require('fs');
+var fs = require('fs');
+
+var server = http.createServer(handler);
+server.listen(3000, function() {
+  console.log("Server is listening on port 3000. Ready to accept requests!");
+});
 
 function handler(request, response){
-
-  if (url.length === "/") {
+  var endpoint = request.url;
+  console.log(endpoint);
+ var method = request.method;
+ console.log(method);
+  if (endpoint === "/") {
     response.writeHead(200, {"Content-Type" : "text/html"});
 
-    fs.readFile(__dirname + '/public/index.html',function(error, file) {
+    fs.readFile(__dirname + '/public/index.html', function(error, file) {
       if (error) {
         console.log(error);
         return;
@@ -15,9 +23,20 @@ function handler(request, response){
       response.end(file);
     });
   }
-}
+  if (endpoint === '/node') {
+     response.write('girls');
+  } else if (endpoint === '/girls') {
+     response.write('node?');
+  } else {
 
-var server = http.createServer(handler);
-server.listen(3000, function() {
-  console.log("Server is listening on port 3000. Ready to accept requests!");
-});
+    var extension = [".css", ".ico", ".jpg"];
+    response.writeHead(200, {"Content-Type" : "text"});
+    fs.readFile(__dirname + '/public/', function(error, file) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+      response.end(file);
+    });
+  }
+}
